@@ -1,65 +1,285 @@
-import Image from "next/image";
+import { Title } from '@/components/ui';
+import { TopBar, Container, Products } from '../components/shared';
+import { Filters } from '@/components/shared';
 
-export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
-}
+const productsArr = [
+    {
+        id: 1,
+        categoryId: 0,
+        title: 'Пиццы',
+        items: [
+            {
+                id: 1,
+                title: 'Сырный ципленок',
+                variants: [
+                    {
+                        id: 1,
+                        type: 'Маленькая',
+                        size: 30,
+                        price: 300,
+                        weight: 200,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:292x292/0198bf57bc517218ab93c762f4b0193e.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf576c45725cac227fd81cd6abfd.avif',
+                    },
+                    {
+                        id: 2,
+                        type: 'Средняя',
+                        size: 40,
+                        price: 400,
+                        weight: 300,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf574bf879bdb7fbad84b39cd3e2.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf576c45725cac227fd81cd6abfd.avif',
+                    },
+                    {
+                        id: 3,
+                        type: 'Большая',
+                        size: 50,
+                        price: 550,
+                        weight: 400,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf574bf879bdb7fbad84b39cd3e2.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf576c45725cac227fd81cd6abfd.avif',
+                    },
+                ],
+            },
+            {
+                id: 2,
+                title: 'Чизбургер пицца',
+                variants: [
+                    {
+                        id: 1,
+                        type: 'Маленькая',
+                        size: 30,
+                        price: 300,
+                        weight: 200,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:292x292/0198bf40eb1171aabe90b1b3ce07c0c5.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0ead476fa8b2a69b9af466c31.avif',
+                    },
+                    {
+                        id: 2,
+                        type: 'Средняя',
+                        size: 40,
+                        price: 400,
+                        weight: 400,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0e54870b0ae63dca748223369.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0ead476fa8b2a69b9af466c31.avif',
+                    },
+                    {
+                        id: 3,
+                        type: 'Большая',
+                        size: 50,
+                        price: 550,
+                        weight: 500,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0e54870b0ae63dca748223369.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0ead476fa8b2a69b9af466c31.avif',
+                    },
+                ],
+            },
+            {
+                id: 3,
+                title: 'Пепперони фреш',
+                variants: [
+                    {
+                        id: 1,
+                        type: 'Маленькая',
+                        size: 30,
+                        price: 300,
+                        weight: 250,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:292x292/0199b77856ec79a986a2d582c2678fff.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf3fd6af726a867a1446960cbba9.avif',
+                    },
+                    {
+                        id: 2,
+                        type: 'Средняя',
+                        size: 40,
+                        price: 400,
+                        weight: 300,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019ac604bad37209b1ec496bbdd98560.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf3fd6af726a867a1446960cbba9.avif',
+                    },
+                    {
+                        id: 3,
+                        type: 'Большая',
+                        size: 50,
+                        price: 550,
+                        weight: 500,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019ac604bad37209b1ec496bbdd98560.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf3fd6af726a867a1446960cbba9.avif',
+                    },
+                ],
+            },
+        ],
+    },
+
+    {
+        id: 2,
+        categoryId: 1,
+        title: 'Завтрак',
+        items: [
+            {
+                id: 1,
+                title: 'Сырный ципленок',
+                variants: [
+                    {
+                        id: 1,
+                        type: 'Маленькая',
+                        size: 30,
+                        price: 300,
+                        weight: 200,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:292x292/0198bf57bc517218ab93c762f4b0193e.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf576c45725cac227fd81cd6abfd.avif',
+                    },
+                    {
+                        id: 2,
+                        type: 'Средняя',
+                        size: 40,
+                        price: 400,
+                        weight: 300,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf574bf879bdb7fbad84b39cd3e2.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf576c45725cac227fd81cd6abfd.avif',
+                    },
+                    {
+                        id: 3,
+                        type: 'Большая',
+                        size: 50,
+                        price: 550,
+                        weight: 400,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf574bf879bdb7fbad84b39cd3e2.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf576c45725cac227fd81cd6abfd.avif',
+                    },
+                ],
+            },
+            {
+                id: 2,
+                title: 'Чизбургер пицца',
+                variants: [
+                    {
+                        id: 1,
+                        type: 'Маленькая',
+                        size: 30,
+                        price: 300,
+                        weight: 200,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:292x292/0198bf40eb1171aabe90b1b3ce07c0c5.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0ead476fa8b2a69b9af466c31.avif',
+                    },
+                    {
+                        id: 2,
+                        type: 'Средняя',
+                        size: 40,
+                        price: 400,
+                        weight: 400,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0e54870b0ae63dca748223369.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0ead476fa8b2a69b9af466c31.avif',
+                    },
+                    {
+                        id: 3,
+                        type: 'Большая',
+                        size: 50,
+                        price: 550,
+                        weight: 500,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0e54870b0ae63dca748223369.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019a10a0ead476fa8b2a69b9af466c31.avif',
+                    },
+                ],
+            },
+            {
+                id: 3,
+                title: 'Пепперони фреш',
+                variants: [
+                    {
+                        id: 1,
+                        type: 'Маленькая',
+                        size: 30,
+                        price: 300,
+                        weight: 250,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:292x292/0199b77856ec79a986a2d582c2678fff.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf3fd6af726a867a1446960cbba9.avif',
+                    },
+                    {
+                        id: 2,
+                        type: 'Средняя',
+                        size: 40,
+                        price: 400,
+                        weight: 300,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019ac604bad37209b1ec496bbdd98560.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf3fd6af726a867a1446960cbba9.avif',
+                    },
+                    {
+                        id: 3,
+                        type: 'Большая',
+                        size: 50,
+                        price: 550,
+                        weight: 500,
+                        imageUrl:
+                            'https://media.dodostatic.net/image/r:760x760/019ac604bad37209b1ec496bbdd98560.avif',
+                        imageThinUrl:
+                            'https://media.dodostatic.net/image/r:760x760/0198bf3fd6af726a867a1446960cbba9.avif',
+                    },
+                ],
+            },
+        ],
+    },
+];
+
+const HomePage = () => {
+    return (
+        <>
+            <Container className="mt-10">
+                <Title text="Все пиццы" size="lg" className="font-extrabold pb-3" />
+            </Container>
+            <TopBar />
+            <Container className="flex flex-row py-5 gap-15 overflow-hidden">
+                {/*Фильтры*/}
+                <Filters />
+
+                {/*Список товаров*/}
+                <div className="flex flex-1 bg-gray-100 flex-col p-5 gap-5 rounded-sm">
+                    <h3 className="text-3xl mb-5">Список товаров</h3>
+                    {productsArr.map((products) => (
+                        <Products
+                            key={products.id}
+                            products={products.items}
+                            title={products.title}
+                            categoryId={products.categoryId}
+                        />
+                    ))}
+                </div>
+            </Container>
+        </>
+    );
+};
+
+export default HomePage;
