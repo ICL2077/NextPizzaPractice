@@ -8,30 +8,6 @@ import { ProductCardDialog } from './product-card-dialog';
 import Link from 'next/link';
 import { variantType } from './products';
 
-export interface topicType {
-    id: number;
-    title: string;
-    price: number;
-}
-
-export const arrOfTopics: topicType[] = [
-    {
-        id: 1,
-        title: 'Сырный бортик',
-        price: 175,
-    },
-    {
-        id: 2,
-        title: 'Вертчина',
-        price: 200,
-    },
-    {
-        id: 3,
-        title: 'Ананасы',
-        price: 50,
-    },
-];
-
 interface Props {
     id: number;
     title: string;

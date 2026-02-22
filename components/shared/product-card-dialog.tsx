@@ -2,10 +2,10 @@
 
 import React from 'react';
 import { DialogContent } from '../ui/dialog';
-import { arrOfTopics, topicType } from './product-card';
-import { CircleCheck } from 'lucide-react';
+// import { CircleCheck } from 'lucide-react';
 import { Button } from '../ui';
 import { variantType } from './products';
+// import { useIngredientsFilter } from '@/hooks/useIngredientsFilter';
 
 interface Props {
     className?: string;
@@ -15,28 +15,14 @@ interface Props {
 }
 
 export const ProductCardDialog: React.FC<Props> = ({ title, variants }) => {
+    // const { ingredients, checkedIngr, onToggleId, ingrPrice } = useIngredientsFilter();
+
     const [sizeId, setSizeId] = React.useState<number>(0);
 
     const typesArr = ['традиционное', 'тонкое'];
     const [typeId, setTypeId] = React.useState<number>(0);
 
-    const [addedTopics, setAddedTopics] = React.useState<topicType[]>([]);
-
-    const handleAddTopic = (id: number) => {
-        const topicInArr = addedTopics.find((itm) => itm.id === id);
-
-        if (topicInArr) {
-            const filteredArr = addedTopics.filter((itm) => itm.id !== topicInArr.id);
-            setAddedTopics(filteredArr);
-        } else {
-            const addedArr = [...addedTopics, arrOfTopics[id - 1]];
-            setAddedTopics(addedArr);
-        }
-    };
-
-    const fullPrice =
-        addedTopics.reduce((globalPrice, itm) => (globalPrice += itm.price), 0) +
-        variants[sizeId].price;
+    const sizesOfImg = [250, 375, 500];
 
     return (
         <DialogContent
@@ -46,6 +32,8 @@ export const ProductCardDialog: React.FC<Props> = ({ title, variants }) => {
                 {/* Изображение */}
                 <div className="flex items-center justify-center w-125 h-full bg-white">
                     <img
+                        width={sizesOfImg[sizeId]}
+                        height={sizesOfImg[sizeId]}
                         src={
                             typeId === 0 ? variants[sizeId].imageUrl : variants[sizeId].imageThinUrl
                         }
@@ -54,7 +42,7 @@ export const ProductCardDialog: React.FC<Props> = ({ title, variants }) => {
                 </div>
 
                 {/* Изменение параметров пиццы */}
-                <div className="px-8 py-3 w-125 h-full bg-amber-100">
+                <div className="flex flex-col px-8 py-3 w-125 h-full bg-amber-100">
                     {/* title  */}
                     <div className="flex flex-col gap-1 py-5">
                         <h1 className="font-extrabold text-2xl">{title}</h1>
@@ -93,38 +81,39 @@ export const ProductCardDialog: React.FC<Props> = ({ title, variants }) => {
                         </ul>
                     </div>
 
-                    <h1 className="font-extrabold  text-sm pt-10 pb-5">Добавте по вкусу</h1>
+                    <h1 className="font-extrabold  text-sm pt-5 pb-5">Добавте по вкусу</h1>
 
                     {/* слайдер с добавками */}
-                    <div className="flex flex-col items-center">
-                        <div className="flex flex-row  gap-3 overflow-auto">
-                            {arrOfTopics.map((topic) => (
+                    {/* <div className="flex flex-1 flex-col items-center">
+                        <div className="grid grid-cols-3 gap-3 h-58.5 w-full overflow-auto">
+                            {ingredients.map((ingredient) => (
                                 <div
-                                    key={topic.id}
-                                    onClick={() => handleAddTopic(topic.id)}
+                                    key={ingredient.id}
+                                    onClick={() => onToggleId(String(ingredient.id))}
                                     className={`${
-                                        addedTopics.find((itm) => itm.id === topic.id)
+                                        checkedIngr.has(String(ingredient.id))
                                             ? 'border border-orange-500'
                                             : ''
                                     } cursor-pointer py-2 flex flex-col items-center bg-white rounded-sm overflow-hidden h-48.25 w-32.5 gap-3`}>
                                     <div className="relative bg-gray-300 overflow-hidden rounded-sm w-27.5 h-27.5">
-                                        {addedTopics.find((itm) => itm.id === topic.id) && (
+                                        {checkedIngr.has(String(ingredient.id)) && (
                                             <CircleCheck
                                                 className="absolute right-1 top-1"
                                                 color="#ff8000"
                                             />
                                         )}
                                     </div>
-                                    <h1>{topic.title}</h1>
-                                    <p>{topic.price}р</p>
+                                    <h1>{ingredient.name}</h1>
+                                    <p>{ingredient.price}р</p>
                                 </div>
                             ))}
                         </div>
-                    </div>
+                    </div> 
 
-                    <Button className="w-full p-5 text-xl mt-10">
-                        Добавить в корзину {fullPrice} руб.
+                    <Button className="w-full p-3 text-xl mt-3">
+                        Добавить в корзину {variants[sizeId].price + ingrPrice} руб.
                     </Button>
+                    */}
                 </div>
             </div>
         </DialogContent>

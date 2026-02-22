@@ -4,61 +4,58 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Button, Input, Slider } from '../ui';
 import { FieldGroup, Field, FieldLabel } from '../ui/field';
-import { CheckBoxComp } from './checkboxcomp';
 import { RussianRuble } from 'lucide-react';
 import { CheckboxGroups } from './checkbox-groups';
+import { useFilters, useIngredients, useFiltersQuery } from '@/hooks';
 
 interface Props {
     className?: string;
 }
 
-const items = [
-    {
-        title: 'Сырный соус',
-        value: '1',
-    },
-    {
-        title: 'Кетчуп',
-        value: '2',
-    },
-    {
-        title: 'Моцарелла',
-        value: '3',
-    },
-    {
-        title: 'Огурчики',
-        value: '4',
-    },
-    {
-        title: 'Маргарин',
-        value: '5',
-    },
-    {
-        title: 'Вертчина',
-        value: '6',
-    },
-];
-
-const defaultItems = items;
-
 export const Filters: React.FC<Props> = ({ className }) => {
-    const typesOfBorder = ['традиционное', 'тонкое'];
+    const {
+        filters,
+        toggleIngr,
+        addIngr,
+        removeIngr,
 
-    const [borderId, setBorderId] = React.useState<number>(0);
+        toggleType,
 
-    const handleChangeBorder = (index: number) => {
-        setBorderId(index);
-    };
+        toggleSize,
+
+        setPrices,
+        handlePrices,
+    } = useFilters();
+
+    const { ingredients, loading } = useIngredients();
+
+    const items = ingredients.map((itm) => ({ id: itm.id, name: itm.name, value: itm.name }));
+
+    const { applyChanges, isChanged } = useFiltersQuery(filters);
 
     return (
         <div className={cn('flex flex-col gap-3 w-62.5 rounded-sm py-5', className)}>
             <h1 className="font-extrabold text-3xl mb-5 ">Фильтрация</h1>
             <div className="flex flex-col ">
                 {/* Верхние чекбоксы */}
-                <div className="flex flex-col gap-1.5 pb-3 border-b border-gray-100">
-                    <CheckBoxComp value="1" text="Можно собирать" />
-                    <CheckBoxComp value="2" text="Новинки" />
-                </div>
+                <CheckboxGroups
+                    className="border-b border-gray-100"
+                    title={'Размеры'}
+                    name={'sizes'}
+                    sortChecks={true}
+                    limit={3}
+                    onToggleId={toggleSize}
+                    itemsSet={filters.sizeSet}
+                    items={[
+                        { id: 1, name: '20 см', value: '20' },
+                        { id: 2, name: '25 см', value: '25' },
+                        { id: 3, name: '30 см', value: '30' },
+                        { id: 4, name: '35 см', value: '35' },
+                        { id: 5, name: '40 см', value: '40' },
+                        { id: 6, name: '45 см', value: '45' },
+                        { id: 7, name: '50 см', value: '50' },
+                    ]}
+                />
 
                 {/* Определитель цены */}
                 <div className="border-b border-gray-100">
@@ -75,7 +72,10 @@ export const Filters: React.FC<Props> = ({ className }) => {
                                         placeholder="0"
                                         min={0}
                                         max={1000}
-                                        defaultValue={0}
+                                        value={String(filters.prices.priceFrom || 0)}
+                                        onChange={(e) =>
+                                            handlePrices('priceFrom', Number(e.target.value))
+                                        }
                                     />
                                     <RussianRuble
                                         size={20}
@@ -94,8 +94,10 @@ export const Filters: React.FC<Props> = ({ className }) => {
                                         placeholder="0"
                                         min={100}
                                         max={1000}
-                                        value={500}
-                                        defaultValue={0}
+                                        value={String(filters.prices.priceTo || 1000)}
+                                        onChange={(e) =>
+                                            handlePrices('priceTo', Number(e.target.value))
+                                        }
                                     />
                                     <RussianRuble
                                         size={20}
@@ -107,37 +109,54 @@ export const Filters: React.FC<Props> = ({ className }) => {
                             </Field>
                         </FieldGroup>
 
-                        <Slider className={'pt-5'} defaultValue={[0, 0]} max={100} step={1} />
+                        <Slider
+                            className={'pt-5'}
+                            value={[filters.prices.priceFrom || 0, filters.prices.priceTo || 1000]}
+                            max={1000}
+                            step={10}
+                            onValueChange={([priceFrom, priceTo]) =>
+                                setPrices({ priceFrom, priceTo })
+                            }
+                        />
                     </div>
                 </div>
 
                 {/* чекбоксы ингридиентов */}
                 <CheckboxGroups
                     className="border-b border-gray-100"
-                    items={items}
+                    title={'Ингридиенты'}
+                    name={'ingredients'}
                     limit={3}
-                    defaultItems={defaultItems}
+                    loading={loading}
+                    items={items}
+                    itemsSet={filters.ingrSet}
+                    onRemove={removeIngr}
+                    onAddId={addIngr}
+                    onToggleId={toggleIngr}
+                    sortChecks={true}
+                    addAllBtn={true}
                 />
 
                 {/* чекбоксы типов теста */}
-                <div className="">
-                    <div className="py-7">
-                        <h1 className="font-extrabold text-1xl pb-5">Тип теста</h1>
-                        <div className="flex flex-col gap-2">
-                            {typesOfBorder.map((borderType, index) => (
-                                <CheckBoxComp
-                                    onCheckedChange={() => handleChangeBorder(index)}
-                                    checkedState={borderId === index && true}
-                                    value={`${String(index)}-border-type`}
-                                    key={index}
-                                    text={borderType}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                <CheckboxGroups
+                    className="border-b border-gray-100"
+                    title={'Типы теста'}
+                    name={'types'}
+                    limit={2}
+                    onToggleId={toggleType}
+                    itemsSet={filters.typeSet}
+                    items={[
+                        { id: 1, name: 'традиционное', value: 'traditional' },
+                        { id: 2, name: 'тонкое', value: 'thin' },
+                    ]}
+                />
             </div>
-            <Button variant={'default'}>Применить</Button>
+
+            {isChanged && (
+                <Button onClick={() => applyChanges(false)} variant={'default'}>
+                    Применить
+                </Button>
+            )}
         </div>
     );
 };

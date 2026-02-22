@@ -266,7 +266,7 @@ const HomePage = () => {
                 <Filters />
 
                 {/*Список товаров*/}
-                <div className="flex flex-1 bg-gray-100 flex-col p-5 gap-5 rounded-sm">
+                <div className="flex flex-1 bg-gray-50 flex-col p-5 gap-5 rounded-sm">
                     <h3 className="text-3xl mb-5">Список товаров</h3>
                     {productsArr.map((products) => (
                         <Products
