@@ -6,6 +6,7 @@ import { ProductCard } from './product-card';
 import { Title } from '../ui';
 import { useInView } from 'react-intersection-observer';
 import { useCategoryStore } from '@/app/store/category';
+import { Ingridient, Product, ProductVariant } from '@/generated/prisma/client';
 
 export interface variantType {
     id: number;
@@ -17,16 +18,15 @@ export interface variantType {
     price: number;
 }
 
-interface productType {
-    id: number;
-    title: string;
-    variants: variantType[];
+interface ProductType extends Product {
+    ingridients: Ingridient[];
+    variants: ProductVariant[];
 }
 
 interface Props {
     title: string;
     categoryId: number;
-    products: productType[];
+    products: ProductType[];
     className?: string;
 }
 
@@ -47,16 +47,17 @@ export const Products: React.FC<Props> = ({ className, categoryId, title, produc
         <div
             id={title}
             ref={ref}
-            className={cn('flex flex-col bg-white w-full h-fit rounded-2xl', className)}>
+            className={cn('flex flex-col bg-white w-full h-fit rounded-2xl my-4', className)}>
             <Title className="p-5" text={title} />
             <div className="grid grid-cols-3 p-5 gap-5">
                 {products.map((itm) => (
                     <ProductCard
                         id={itm.id}
-                        imageUrl={itm.variants[0].imageUrl}
+                        imageUrl={itm.imageUrl}
                         title={itm.title}
                         price={itm.variants[0].price}
                         variants={itm.variants}
+                        ingridients={itm.ingridients}
                         key={itm.id}
                     />
                 ))}

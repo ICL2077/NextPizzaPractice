@@ -4,13 +4,15 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { ChevronDown } from 'lucide-react';
-import { additonalCategories, categories, useCategoryStore } from '@/app/store/category';
+import { additonalCategories, useCategoryStore } from '@/app/store/category';
+import { Category } from '@/generated/prisma/client';
 
 interface Props {
+    categories: Category[];
     className?: string;
 }
 
-export const Categories: React.FC<Props> = ({ className }) => {
+export const Categories: React.FC<Props> = ({ categories, className }) => {
     {
         /*
             add means additional
@@ -24,15 +26,15 @@ export const Categories: React.FC<Props> = ({ className }) => {
 
     return (
         <ul className={cn('flex rounded-sm items-center px-2 py-1 bg-gray-100 w-fit', className)}>
-            {categories.map((category, index) => (
-                <a key={index} href={`/#${category}`}>
+            {categories.map((category) => (
+                <a key={category.id} href={`/#${category.name}`}>
                     <li
-                        onClick={() => changeCat({ type: 'Default', arg: index })}
+                        onClick={() => changeCat({ type: 'Default', arg: category.id })}
                         className={`cursor-pointer transition duration-300 ${
-                            activeCat === index ? 'bg-white text-orange-600' : ''
+                            activeCat === category.id ? 'bg-white text-orange-600' : ''
                         } rounded-lg mx-1.5 px-3 py-2`}
-                        key={index}>
-                        {category}
+                        key={category.id}>
+                        {category.name}
                     </li>
                 </a>
             ))}

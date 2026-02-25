@@ -85,7 +85,8 @@ async function up() {
                 productId: pizza1.id,
 
                 name: '30 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf57bc517218ab93c762f4b0193e.avif',
                 price: 300,
 
                 size: 30,
@@ -95,7 +96,8 @@ async function up() {
                 productId: pizza1.id,
 
                 name: '35 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf576c45725cac227fd81cd6abfd.avif',
                 price: 450,
 
                 size: 35,
@@ -107,7 +109,8 @@ async function up() {
                 productId: pizza2.id,
 
                 name: '30 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf40eb1171aabe90b1b3ce07c0c5.avif',
                 price: 250,
 
                 size: 30,
@@ -117,7 +120,8 @@ async function up() {
                 productId: pizza2.id,
 
                 name: '35 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf4107ab727ca78f5f0a80f9966f.avif',
                 price: 250,
 
                 size: 35,
@@ -127,7 +131,8 @@ async function up() {
                 productId: pizza2.id,
 
                 name: '30 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf40f3da72bd8d205ff00cc3613e.avif',
                 price: 250,
 
                 size: 30,
@@ -137,7 +142,8 @@ async function up() {
                 productId: pizza2.id,
 
                 name: '35 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf410ffa72d9b35802f9f0c97c43.avif',
                 price: 250,
 
                 size: 35,
@@ -149,7 +155,8 @@ async function up() {
                 productId: pizza3.id,
 
                 name: '30 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0199b77856ec79a986a2d582c2678fff.avif',
                 price: 250,
 
                 size: 30,
@@ -159,7 +166,8 @@ async function up() {
                 productId: pizza3.id,
 
                 name: '35 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf3fc88370f281bc3a8cfff64518.avif',
                 price: 250,
 
                 size: 35,
@@ -169,7 +177,8 @@ async function up() {
                 productId: pizza3.id,
 
                 name: '30 см',
-                imageUrl: '',
+                imageUrl:
+                    'https://media.dodostatic.net/image/r:760x760/0198bf3fb33973f78f8af9892f86df62.avif',
                 price: 250,
 
                 size: 30,

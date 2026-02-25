@@ -20,8 +20,10 @@ export const useFiltersQuery = (filters: filters): ReturnValues => {
     const [pricesDebState, setPricesDebState] = React.useState<PriceTypes>({ ...filters.prices });
 
     const getChangedStatus = (param: keyof ParamsTypes, array: string[]) => {
-        const paramLength = url.get(param)?.split(',').length ?? 0;
-        return paramLength !== array.length && (paramLength > 0 || array.length > 0);
+        const paramArray = url.get(param)?.split(',') ?? [];
+        const notInParamsArr = array.filter((itm) => !paramArray.includes(itm));
+
+        return notInParamsArr.length > 0 || paramArray.length !== array.length;
     };
 
     const isChangedIngr = getChangedStatus('ingr', ingrSetToArr);

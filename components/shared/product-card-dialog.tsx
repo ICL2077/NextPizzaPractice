@@ -3,26 +3,40 @@
 import React from 'react';
 import { DialogContent } from '../ui/dialog';
 // import { CircleCheck } from 'lucide-react';
-import { Button } from '../ui';
-import { variantType } from './products';
+import { Ingridient, ProductVariant } from '@/generated/prisma/client';
+import { useSet } from 'react-use';
 // import { useIngredientsFilter } from '@/hooks/useIngredientsFilter';
 
 interface Props {
     className?: string;
     title: string;
-    variants: variantType[];
+    variants: ProductVariant[];
+    ingridients: Ingridient[];
     id: number;
 }
 
 export const ProductCardDialog: React.FC<Props> = ({ title, variants }) => {
     // const { ingredients, checkedIngr, onToggleId, ingrPrice } = useIngredientsFilter();
 
-    const [sizeId, setSizeId] = React.useState<number>(0);
-
     const typesArr = ['традиционное', 'тонкое'];
     const [typeId, setTypeId] = React.useState<number>(0);
+    const [typeSet, { add: addType }] = useSet(new Set<number>());
 
+    const [sizeId, setSizeId] = React.useState<number>(0);
     const sizesOfImg = [250, 375, 500];
+    const sizes = variants
+        .filter((variant) => variant.pizzaType === typeId + 1)
+        .map((variant) => variant.size);
+
+    React.useEffect(() => {
+        if (sizeId >= sizes.length) {
+            setSizeId(0);
+        }
+    }, [typeId]);
+
+    React.useEffect(() => {
+        variants.map((variant) => variant.pizzaType && addType(variant.pizzaType));
+    }, [variants, addType]);
 
     return (
         <DialogContent
@@ -34,9 +48,7 @@ export const ProductCardDialog: React.FC<Props> = ({ title, variants }) => {
                     <img
                         width={sizesOfImg[sizeId]}
                         height={sizesOfImg[sizeId]}
-                        src={
-                            typeId === 0 ? variants[sizeId].imageUrl : variants[sizeId].imageThinUrl
-                        }
+                        src={variants[typeId].imageUrl ?? ''}
                         alt="product-img"
                     />
                 </div>
@@ -48,34 +60,33 @@ export const ProductCardDialog: React.FC<Props> = ({ title, variants }) => {
                         <h1 className="font-extrabold text-2xl">{title}</h1>
                         <p className="text-gray-400">
                             {variants[sizeId].size} см, {typesArr[typeId]} тесто,
-                            {variants[sizeId].weight} грамм
                         </p>
                     </div>
 
                     {/* настройка размеров и типа */}
                     <div className="flex flex-col items-center gap-2">
                         <ul className="flex flex-row items-center rounded-2xl w-fit overflow-hidden h-9.75 bg-gray-200">
-                            {variants.map((variant, index) => (
+                            {sizes.map((size, index) => (
                                 <li
                                     onClick={() => setSizeId(index)}
                                     className={`${
                                         sizeId === index ? 'bg-white' : ''
                                     } px-3 py-3 rounded-2xl text-center overflow-hidden w-33.75 cursor-pointer`}
                                     key={index}>
-                                    {variant.size} см
+                                    {size} см
                                 </li>
                             ))}
                         </ul>
 
                         <ul className="flex flex-row items-center rounded-2xl overflow-hidden h-9.75 bg-gray-200">
-                            {typesArr.map((type, index) => (
+                            {Array.from(typeSet).map((type, index) => (
                                 <li
                                     onClick={() => setTypeId(index)}
                                     className={`${
                                         typeId === index ? 'bg-white' : ''
                                     } px-10 py-3 w-51.75 rounded-2xl  text-center overflow-hidden cursor-pointer`}
                                     key={index}>
-                                    {type}
+                                    {typesArr[index]}
                                 </li>
                             ))}
                         </ul>

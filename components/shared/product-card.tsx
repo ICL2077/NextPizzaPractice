@@ -6,21 +6,31 @@ import { Button, Dialog } from '../ui';
 import { DialogTitle, DialogTrigger } from '../ui/dialog';
 import { ProductCardDialog } from './product-card-dialog';
 import Link from 'next/link';
-import { variantType } from './products';
+import { Ingridient, ProductVariant } from '@/generated/prisma/client';
 
 interface Props {
     id: number;
     title: string;
     price: number;
     imageUrl: string;
-    variants: variantType[];
+    variants: ProductVariant[];
+    ingridients: Ingridient[];
 }
 
-export const ProductCard: React.FC<Props> = ({ id, title, price, imageUrl, variants }) => {
+export const ProductCard: React.FC<Props> = ({
+    id,
+    title,
+    price,
+    imageUrl,
+    variants,
+    ingridients,
+}) => {
+    const ingredients = ingridients.map((ingr) => ingr.name).join(', ');
+
     return (
         <>
             <Dialog>
-                <Link href={``}>
+                <Link href={`/product/${id}`}>
                     <div
                         key={id}
                         className="bg-white w-71.25 h-fit rounded-2xl overflow-hidden p-1">
@@ -42,10 +52,9 @@ export const ProductCard: React.FC<Props> = ({ id, title, price, imageUrl, varia
 
                         <div className="p-2 flex flex-col">
                             <h3 className="font-extrabold text-xl py-3">{title}</h3>
-                            <p className="text-gray-400">
-                                Цыпленок, моцарелла, сыры чеддер и пармезан, сырный соус, томаты,
-                                соус альфредо, чеснок
-                            </p>
+
+                            <p className="text-gray-400">{ingredients}</p>
+
                             <div className="flex flex-row items-center justify-between py-3">
                                 <h3 className="">от {price} руб.</h3>
                                 <Button variant={'outline'} className="flex items-center gap-2">
@@ -57,7 +66,12 @@ export const ProductCard: React.FC<Props> = ({ id, title, price, imageUrl, varia
                     </div>
                 </Link>
 
-                <ProductCardDialog title={title} id={id} variants={variants} />
+                <ProductCardDialog
+                    title={title}
+                    id={id}
+                    variants={variants}
+                    ingridients={ingridients}
+                />
             </Dialog>
         </>
     );

@@ -7,7 +7,7 @@ export interface PriceTypes {
     priceTo?: number;
 }
 
-interface ParamsTypes extends PriceTypes {
+export interface ParamsTypes extends PriceTypes {
     ingr: string;
     types: string;
     sizes: string;
